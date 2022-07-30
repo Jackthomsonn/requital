@@ -1,0 +1,25 @@
+{
+  "name": "requtal",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/requital-v2",
+    "apps/requital-functions/functions",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "*",
+    "turbo": "latest"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": "16"
+  },
+  "dependencies": {},
+  "packageManager": "npm@8.3.0"
+}

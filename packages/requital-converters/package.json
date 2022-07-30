@@ -1,0 +1,11 @@
+{
+  "name": "requital-converters",
+  "scripts": {
+    "lint": "npx eslint",
+    "dev": "tsc --watch"
+  },
+  "main": "./lib/index.jsx",
+  "types": "./index.tsx",
+  "version": "0.0.0",
+  "license": "MIT"
+}
