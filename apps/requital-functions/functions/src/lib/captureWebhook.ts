@@ -1,12 +1,22 @@
 import * as admin from 'firebase-admin';
 
 import * as functions from 'firebase-functions';
-import { SyncUpdatesAvailableWebhook, WebhookType } from 'plaid';
+import { Configuration, PlaidApi, PlaidEnvironments, SyncUpdatesAvailableWebhook, WebhookType } from 'plaid';
 import { processTransactions } from '../offerEngine';
 
-export const captureWebhook = functions.https.onRequest(
+export const captureWebhook = functions.runWith({ timeoutSeconds: 540, secrets: ['PLAID_CLIENT_ID', 'PLAID_SECRET'], ingressSettings: 'ALLOW_ALL' }).https.onRequest(
   async (request, response) => {
     if (!admin.apps.length) admin.initializeApp();
+
+    const client = new PlaidApi(new Configuration({
+      basePath: PlaidEnvironments.development,
+      baseOptions: {
+        headers: {
+          'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
+          'PLAID-SECRET': process.env.PLAID_SECRET,
+        },
+      },
+    }));
 
     const payload: SyncUpdatesAvailableWebhook = request.body;
 
@@ -41,7 +51,7 @@ export const captureWebhook = functions.https.onRequest(
     }
 
     try {
-      const transactions = await processTransactions(payload.item_id);
+      const transactions = await processTransactions(payload.item_id, client);
 
       response.status(200).send({ status: 'success', data: transactions });
     } catch (error) {

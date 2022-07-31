@@ -1,5 +1,5 @@
 {
-  "name": "requital-converters",
+  "name": "requital-converter",
   "scripts": {
     "lint": "npx eslint",
     "dev": "tsc --watch"

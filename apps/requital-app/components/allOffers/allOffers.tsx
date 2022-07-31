@@ -5,7 +5,7 @@ import { auth, firestore } from '../../firebase';
 
 import { Card } from '../card/card';
 import { Skeleton } from '../skeleton/skeleton';
-import { ActivatedOfferConverter, Business, Offer, OfferConverter } from 'requital-converters';
+import { ActivatedOfferConverter, Business, Offer, OfferConverter } from 'requital-converter';
 
 type UIOffers = Offer & {
   company: string,

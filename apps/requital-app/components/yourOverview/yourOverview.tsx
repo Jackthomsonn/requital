@@ -1,7 +1,7 @@
 import { onSnapshot, collection } from 'firebase/firestore';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { RedeemedOffer, RedeemedOfferConverter } from 'requital-converters';
+import { RedeemedOffer, RedeemedOfferConverter } from 'requital-converter';
 import { useApp } from '../../contexts/appContext';
 import { firestore, auth } from '../../firebase';
 

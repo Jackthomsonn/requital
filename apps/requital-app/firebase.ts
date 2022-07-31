@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { inTestMode } from './env';
 
 const app = initializeApp({
   apiKey: 'AIzaSyCuvx2-ojSjN-48VJPI4tk6KtdFdkh1uCo',
@@ -13,7 +12,7 @@ const app = initializeApp({
   measurementId: 'G-0X982VHQ2B',
 });
 
-if (inTestMode) {
+if (process.env.NODE_ENV === 'development') {
   const firestore = getFirestore(app);
   connectFirestoreEmulator(firestore, '192.168.0.44', 8080);
 

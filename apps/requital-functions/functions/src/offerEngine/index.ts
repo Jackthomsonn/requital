@@ -1,26 +1,14 @@
 import * as admin from 'firebase-admin';
 
-import { Configuration, PlaidApi, PlaidEnvironments, Transaction } from 'plaid';
+import { PlaidApi, Transaction } from 'plaid';
 
-import { BusinessConverter } from 'requital-converters';
-import { ActivatedOfferConverter } from 'requital-converters';
-import { RedeemedOfferConverter } from 'requital-converters';
-import { OfferConverter } from 'requital-converters';
-import { UserConverter } from 'requital-converters';
+import { BusinessConverter } from 'requital-converter';
+import { ActivatedOfferConverter } from 'requital-converter';
+import { RedeemedOfferConverter } from 'requital-converter';
+import { OfferConverter } from 'requital-converter';
+import { UserConverter } from 'requital-converter';
 
-const client = new PlaidApi(
-  new Configuration({
-    basePath: PlaidEnvironments.development,
-    baseOptions: {
-      headers: {
-        'PLAID-CLIENT-ID': '5e8ce6edb83f3800136d204e',
-        'PLAID-SECRET': 'c1cf30a84dc34b29df32523a4b50fc',
-      },
-    },
-  }),
-);
-
-export const processTransactions = async (itemId: string): Promise<void | Transaction[]> => {
+export const processTransactions = async (itemId: string, client: PlaidApi): Promise<void | Transaction[]> => {
   const db = admin.firestore();
 
   try {

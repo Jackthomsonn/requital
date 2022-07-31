@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 node_modules
 .pnp
@@ -8,8 +6,7 @@ node_modules
 # testing
 coverage
 
-# next.js
-.next/
+# misc
 out/
 build
 
@@ -22,8 +19,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+firestore-debug.log
+ui-debug.log
+firebase-debug.log
+
 
 # local env files
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -31,8 +33,9 @@ yarn-error.log*
 
 # turbo and built files
 .turbo
-packages/requital-converters/lib/
+packages/requital-converter/lib/
 apps/requital-app/.expo/
 apps/requital-functions/functions/lib/
-apps/requital-functions/functions/firestore-debug.log
-apps/requital-functions/functions/ui-debug.log
+.vscode/settings.json
+.env.dev
+.env

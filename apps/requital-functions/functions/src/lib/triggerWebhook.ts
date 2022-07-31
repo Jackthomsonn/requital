@@ -8,21 +8,21 @@ import {
   PlaidEnvironments,
   SandboxItemFireWebhookRequest,
   SandboxItemFireWebhookRequestWebhookCodeEnum } from 'plaid';
-import { UserConverter } from 'requital-converters';
+import { UserConverter } from 'requital-converter';
 ;
 
-const client = new PlaidApi(new Configuration({
-  basePath: PlaidEnvironments.development,
-  baseOptions: {
-    headers: {
-      'PLAID-CLIENT-ID': '5e8ce6edb83f3800136d204e',
-      'PLAID-SECRET': 'c1cf30a84dc34b29df32523a4b50fc',
-    },
-  },
-}));
-
-export const triggerWebhook = functions.https.onRequest(async (request, response) => {
+export const triggerWebhook = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 'PLAID_SECRET'], ingressSettings: 'ALLOW_ALL' }).https.onRequest(async (request, response) => {
   if (!admin.apps.length) admin.initializeApp();
+
+  const client = new PlaidApi(new Configuration({
+    basePath: PlaidEnvironments.development,
+    baseOptions: {
+      headers: {
+        'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
+        'PLAID-SECRET': process.env.PLAID_SECRET,
+      },
+    },
+  }));
 
   const db = admin.firestore();
 

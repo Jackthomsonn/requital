@@ -1,11 +1,11 @@
 import { Dimensions } from 'react-native';
 
 import { Buffer } from 'buffer';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { auth } from '../../firebase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../../contexts/appContext';
-import { ParamListBase, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import PlaidLink from '../expo-plaid-link/Index';
 
 global.Buffer = Buffer;
@@ -26,7 +26,7 @@ export function BankOnboard() {
 
   const generateToken = async () => {
     const response = await fetch(
-      'https://requital.eu.ngrok.io/requital-39e1f/us-central1/createLinkToken',
+      `${process.env.FUNCTION_URL}/createLinkToken`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -40,7 +40,7 @@ export function BankOnboard() {
     setLinkToken(data.link_token);
   };
 
-  const onSuccess = React.useCallback(
+  const onSuccess = useCallback(
     async (success: {
       publicToken: string;
       nextFlowReady: boolean;
@@ -52,7 +52,7 @@ export function BankOnboard() {
       }
 
       await fetch(
-        'https://requital.eu.ngrok.io/requital-39e1f/us-central1/setAccessToken',
+        `${process.env.FUNCTION_URL}/setAccessToken`,
         {
           method: 'POST',
           headers: {

@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "requital-39e1f"
-  }
+    "default": "requital-39e1f",
+    "dev": "requital-39e1f",
+    "prod": "requital-39e1f"
+  },
+  "targets": {},
+  "etags": {}
 }

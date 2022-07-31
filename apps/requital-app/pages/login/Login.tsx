@@ -1,3 +1,4 @@
+import * as AuthSession from 'expo-auth-session';
 import {
   Image,
   View,
@@ -8,9 +9,6 @@ import {
 } from 'react-native';
 import { signInWithCredential, GoogleAuthProvider } from 'firebase/auth';
 import React, { useEffect } from 'react';
-import {
-  appRedirectUri,
-} from '../../env';
 import { Variables } from '../../Variables';
 import { useAuthRequest } from 'expo-auth-session/providers/google';
 import { auth } from '../../firebase';
@@ -43,8 +41,8 @@ const styles = StyleSheet.create({
 
 export function LoginScreen() {
   const [_, response, promptAsync] = useAuthRequest({
-    clientSecret: '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',
-    redirectUri: appRedirectUri,
+    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: AuthSession.makeRedirectUri({ native: 'requital://', useProxy: true });,
   });
 
   useEffect(() => {
