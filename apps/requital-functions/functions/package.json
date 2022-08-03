@@ -8,8 +8,7 @@
     "emulators:start": "firebase emulators:start --import=./seed --export-on-exit=./seed",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
-    "deploy:dev": "firebase use dev --add && firebase deploy --only functions",
-    "deploy:prod": "firebase use prod --add && firebase deploy --only functions",
+    "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "grab:port": "lsof -i tcp:4000"
   },

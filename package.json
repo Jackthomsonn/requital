@@ -9,8 +9,9 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint"
+    "dev": "turbo run dev --parallel & npm run setup-tunnel",
+    "lint": "turbo run lint",
+    "setup-tunnel": "ngrok http 5001 --subdomain requital"
   },
   "devDependencies": {
     "eslint-config-custom": "*",

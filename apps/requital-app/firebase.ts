@@ -12,7 +12,7 @@ const app = initializeApp({
   measurementId: 'G-0X982VHQ2B',
 });
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'local') {
   const firestore = getFirestore(app);
   connectFirestoreEmulator(firestore, '192.168.0.44', 8080);
 

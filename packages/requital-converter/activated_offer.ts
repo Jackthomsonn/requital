@@ -16,4 +16,3 @@ export const ActivatedOfferConverter = {
     return new ActivatedOffer(data.originalOfferId);
   },
 };
-

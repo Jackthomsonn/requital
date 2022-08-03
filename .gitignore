@@ -39,3 +39,4 @@ apps/requital-functions/functions/lib/
 .vscode/settings.json
 .env.dev
 .env
+.vscode/configurationCache.log

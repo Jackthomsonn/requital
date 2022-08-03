@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 export function LoginScreen() {
   const [_, response, promptAsync] = useAuthRequest({
     clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: AuthSession.makeRedirectUri({ native: 'requital://', useProxy: true });,
+    redirectUri: AuthSession.makeRedirectUri({ native: 'requital://', useProxy: true }),
   });
 
   useEffect(() => {

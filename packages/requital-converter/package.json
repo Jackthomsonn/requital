@@ -2,7 +2,9 @@
   "name": "requital-converter",
   "scripts": {
     "lint": "npx eslint",
-    "dev": "tsc --watch"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepare": "npm run build"
   },
   "main": "./lib/index.jsx",
   "types": "./index.tsx",

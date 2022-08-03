@@ -10,9 +10,9 @@ run-apps:
 	$(call header, Run apps)
 	npm run dev
 
-get-secret:
-	$(call header, Get secret)
-	cd apps/requital-functions/functions && npx firebase functions:secrets:get $KEY
+access-secret:
+	$(call header, Access secret)
+	cd apps/requital-functions/functions && npx firebase functions:secrets:access $(KEY)
 
 set-secret:
 	$(call header, Set secret)
@@ -22,13 +22,9 @@ prune-secrets:
 	$(call header, Get secrets)
 	cd apps/requital-functions/functions && npx firebase functions:secrets:prune
 
-deploy-functions-dev:
-	$(call header, Deploy functions)
-	(cd apps/requital-functions/functions && npm run deploy:dev)
-
 deploy-functions-prod:
 	$(call header, Deploy functions)
-	(cd apps/requital-functions/functions && npm run deploy:prod)
+	(cd apps/requital-functions/functions && npm run deploy)
 
 deploy-app:
 	$(call header, Deploy app)
