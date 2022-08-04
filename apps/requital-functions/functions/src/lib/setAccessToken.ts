@@ -2,7 +2,6 @@ import * as admin from 'firebase-admin';
 
 import * as functions from 'firebase-functions';
 import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
-import { UserConverter } from 'requital-converter';
 
 export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 'PLAID_SECRET'], ingressSettings: 'ALLOW_ALL' }).https.onRequest(async (request, response) => {
   if (!admin.apps.length) admin.initializeApp();
@@ -20,6 +19,7 @@ export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', '
   const db = admin.firestore();
 
   try {
+    console.log('Request:', request.body);
     const res = await client.itemPublicTokenExchange({
       public_token: request.body.public_token,
     });
@@ -28,10 +28,11 @@ export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', '
 
     const itemID = res.data.item_id;
 
-    await db.collection('users').withConverter(UserConverter).doc(request.body.uid).set({
+    console.log('Item ID:', itemID);
+    await db.collection('users').doc(request.body.uid).set({
       accessToken: res.data.access_token,
       itemID,
-    });
+    }, { merge: true });
 
     response.status(200).json({ status: 'success' });
   } catch (error) {

@@ -10,17 +10,15 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
 
 
-# Make data base, printed on Wed Aug  3 20:11:19 2022
+# Make data base, printed on Thu Aug  4 17:00:01 2022
 
 # Variables
 
-# automatic
  
+# automatic
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
-# environment
-ELECTRON_NO_ATTACH_CONSOLE = 1
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # automatic
@@ -38,15 +36,15 @@ _ = /usr/bin/make
 # environment
 WALLABY_PRODUCTION = true
 # environment
-STARSHIP_SESSION_KEY = 2681320764504931
+STARSHIP_SESSION_KEY = 1609831836714292
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_CWD = /Users/jackthomson/Documents/projects/requital
+VSCODE_CWD = /
 # environment
-PATH = /Users/jackthomson/.helmenv/bin:/Users/jackthomson/.asdf/shims:/Users/jackthomson/.asdf/bin:/Users/jackthomson/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+PATH = /Users/jackthomson/.helmenv/bin:/Users/jackthomson/.asdf/shims:/Users/jackthomson/.asdf/bin:/Users/jackthomson/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # makefile (from `Makefile', line 1)
@@ -56,7 +54,7 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.UcWy5vuTE8/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.kbKTI3DVKk/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -72,9 +70,7 @@ VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 HOME = /Users/jackthomson
 # default
-MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
-# environment
-VSCODE_CLI = 1
+MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
 VSCODE_CODE_CACHE_PATH = /Users/jackthomson/Library/Application Support/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # environment
@@ -89,14 +85,12 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
 XPC_FLAGS = 0x0
-# environment
-COLORTERM = truecolor
 # default
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 3
+SHLVL = 1
 # makefile (from `Makefile', line 1)
 header =   $(info $(START)▶▶▶ $(1)$(END))
 # default
@@ -110,14 +104,13 @@ LESS = -R
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
-MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
-# environment
-TERM_PROGRAM = Hyper
+MAKE_COMMAND := /Applications/Xcode.app/Contents/Developer/usr/bin/make
 # default
 .VARIABLES := 
 # environment
 TMPDIR = /var/folders/x1/1r62c70j57g9cjtjw1xxd6x40000gn/T/
 # automatic
+ 
 *F = $(notdir $*)
 # environment
 VSCODE_IPC_HOOK = /Users/jackthomson/Library/Application Support/Code/1.69.2-main.sock
@@ -130,9 +123,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-TERM_PROGRAM_VERSION = 3.2.3
-# environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.2361089.2361095.B6E62522-AF88-4B46-8288-3B73A5A71010
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.2361089.2361095
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
@@ -164,13 +155,11 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-TERM = xterm-256color
-# environment
-VSCODE_PID = 27178
+VSCODE_PID = 13586
 # environment
 STARSHIP_SHELL = zsh
 # variable set hash-table stats:
-# Load=77/1024=8%, Rehash=0, Collisions=4/100=4%
+# Load=71/1024=7%, Rehash=0, Collisions=4/94=4%
 
 # Pattern-specific Variable Values
 
@@ -178,7 +167,7 @@ STARSHIP_SHELL = zsh
 
 # Directories
 
-# . (device 16777234, inode 4869522): 14 files, no impossibilities.
+# . (device 16777233, inode 4869522): 14 files, no impossibilities.
 
 # 14 files, no impossibilities in 1 directories.
 
@@ -203,7 +192,7 @@ deploy-app:
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 30):
 	$(call header, Deploy app)
-	(cd apps/requital-app && eas build)
+	(cd apps/requital-app && npm run build)
 	
 
 # Not a target:
@@ -215,7 +204,7 @@ deploy-app:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-01 22:17:51
+#  Last modified 2022-08-03 20:14:07
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -230,6 +219,7 @@ deploy-functions-prod:
 	(cd apps/requital-functions/functions && npm run deploy)
 	
 
+ 
 set-secret:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -257,7 +247,6 @@ access-secret:
 prune-secrets:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
- 
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 22):
 	$(call header, Get secrets)
@@ -295,6 +284,6 @@ run-apps:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Wed Aug  3 20:11:19 2022
+# Finished Make data base on Thu Aug  4 17:00:01 2022
 
  

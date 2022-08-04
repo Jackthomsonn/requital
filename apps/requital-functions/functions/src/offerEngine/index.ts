@@ -17,6 +17,8 @@ export const processTransactions = async (itemId: string, client: PlaidApi): Pro
 
     const userDoc = await db.collection('users').withConverter(UserConverter).doc(userId).get();
 
+    console.log(`Processing transactions for user ${userId}`);
+    console.log(userDoc.data());
     let cursor = userDoc.data()?.cursor || '';
 
     const initialCall = cursor === '';
@@ -24,11 +26,16 @@ export const processTransactions = async (itemId: string, client: PlaidApi): Pro
     let hasMore = true;
 
     while (hasMore) {
+      console.log('about to start');
+      if (!user.accessToken) return;
+
       const result = await client.transactionsSync({
         access_token: user.accessToken,
         count: 500,
         cursor: cursor ?? undefined,
       });
+
+      console.log('I am here');
 
       // Handle rate limiting for initial call of all historical transactions
       await new Promise((resolve) => setTimeout(resolve, 1900));
@@ -67,7 +74,7 @@ export const processTransactions = async (itemId: string, client: PlaidApi): Pro
                       // Check if offer has already been matched
                       if (exists.docs.length) return;
 
-                      db.collection('users')
+                      await db.collection('users')
                         .doc(userId)
                         .collection('redeemed_offers')
                         .withConverter(RedeemedOfferConverter)

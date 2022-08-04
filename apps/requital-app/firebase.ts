@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import Constants from 'expo-constants';
 
 const app = initializeApp({
   apiKey: 'AIzaSyCuvx2-ojSjN-48VJPI4tk6KtdFdkh1uCo',
@@ -12,7 +13,7 @@ const app = initializeApp({
   measurementId: 'G-0X982VHQ2B',
 });
 
-if (process.env.NODE_ENV === 'local') {
+if (Constants.manifest?.extra?.environment === 'local') {
   const firestore = getFirestore(app);
   connectFirestoreEmulator(firestore, '192.168.0.44', 8080);
 

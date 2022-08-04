@@ -30,8 +30,13 @@ export const triggerWebhook = functions.runWith({ secrets: ['PLAID_CLIENT_ID', '
     const users = await db.collection('users').withConverter(UserConverter).where('itemID', '==', request.body).get();
     const user = users.docs[0].data();
 
+    if (!user.accessToken) {
+      response.status(500).json({ status: 'error', error: 'User has no access token' });
+      return;
+    }
+
     const webhookRequest: SandboxItemFireWebhookRequest = {
-      access_token: user?.accessToken,
+      access_token: user.accessToken,
       webhook_code: SandboxItemFireWebhookRequestWebhookCodeEnum.DefaultUpdate,
     };
 

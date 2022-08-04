@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../../contexts/appContext';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import PlaidLink from '../expo-plaid-link/Index';
+import Constants from 'expo-constants';
 
 global.Buffer = Buffer;
 
@@ -26,7 +27,7 @@ export function BankOnboard() {
 
   const generateToken = async () => {
     const response = await fetch(
-      `${process.env.FUNCTION_URL}/createLinkToken`,
+      `${Constants.manifest?.extra?.functionUrl}/createLinkToken`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -52,7 +53,7 @@ export function BankOnboard() {
       }
 
       await fetch(
-        `${process.env.FUNCTION_URL}/setAccessToken`,
+        `${Constants.manifest?.extra?.functionUrl}/setAccessToken`,
         {
           method: 'POST',
           headers: {
@@ -74,16 +75,11 @@ export function BankOnboard() {
 
   useEffect(() => {
     if (accountIsLinked) navigate('Home');
-  });
 
-  useMemo(() => {
-    if (params.nextFlowUri) return;
-
-    if (accountIsLinked) return;
     generateToken();
-  }, []);
+  }, [accountIsLinked]);
 
-  return linkToken || params.nextFlowUri ? (
+  return linkToken || params?.nextFlowUri ? (
     <SafeAreaView
       style={{
         display: 'flex',
@@ -94,7 +90,7 @@ export function BankOnboard() {
     >
       <PlaidLink
         linkToken={linkToken}
-        uri={params.nextFlowUri}
+        uri={params?.nextFlowUri}
         onSuccess={onSuccess}
       />
     </SafeAreaView>

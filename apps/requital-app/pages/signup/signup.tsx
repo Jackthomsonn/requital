@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Controller, useForm } from 'react-hook-form';
 import { Variables } from '../../Variables';
 import { auth } from '../../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function LoginScreen() {
+export function SignupScreen() {
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       email: '',
@@ -45,7 +45,7 @@ export function LoginScreen() {
 
   const onSubmit = async (data: {email: string, password: string}) => {
     try {
-      await signInWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         auth,
         data.email,
         data.password,
@@ -100,8 +100,8 @@ export function LoginScreen() {
         />
         {errors.email && <Text>This is required.</Text>}
 
-        <Button title="Login" onPress={handleSubmit(onSubmit)} />
-        <Text onPress={() => navigate('Signup')}>Dont have an account? Sign up here</Text>
+        <Button title="Sign up" onPress={handleSubmit(onSubmit)} />
+        <Text onPress={() => navigate('Login')}>Already have an account? Log in here</Text>
       </KeyboardAvoidingView>
     </SafeAreaView >
   );

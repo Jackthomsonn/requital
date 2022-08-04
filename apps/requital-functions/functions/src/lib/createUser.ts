@@ -11,7 +11,10 @@ export const createUser = functions.runWith({ ingressSettings: 'ALLOW_ALL' }).au
   try {
     await db.collection('users').withConverter(UserConverter).doc(user.uid).set({
       cursor: '',
-    }, { merge: true });
+      accessToken: '',
+      itemID: '',
+      pushToken: '',
+    });
   } catch (error) {
     throw new Error(error as any);
   }

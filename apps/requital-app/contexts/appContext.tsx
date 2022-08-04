@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { doc, getDoc } from 'firebase/firestore';
 import React, { createContext, Dispatch, useContext, useState } from 'react';
+import { UserConverter } from 'requital-converter';
+import { auth, firestore } from '../firebase';
 
 const AppContext = createContext({
   accountIsLinked: false,
@@ -12,9 +15,12 @@ export const AppProvider = ({ children }: any) => {
   const [accountIsLinked, setAccountIsLinked] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  AsyncStorage.getItem('accountIsLinked').then((isLinked) => {
-    if (isLinked) setAccountIsLinked(Boolean(isLinked));
-  });
+  const userRef = doc(firestore, `users/${auth.currentUser?.uid}`).withConverter(UserConverter);
+  getDoc(userRef).then(userDoc => {
+    AsyncStorage.getItem('accountIsLinked').then((isLinked) => {
+      if (isLinked || userDoc.data()?.accessToken) setAccountIsLinked(true);
+    });
+  })
 
   return (
     <AppContext.Provider

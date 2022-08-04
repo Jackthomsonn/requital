@@ -23,6 +23,7 @@ export const matchOffers = functions.runWith({ timeoutSeconds: 540, secrets: ['P
 
     response.status(200).send({ status: 'success', data: transactions });
   } catch (error: any) {
+    console.log(error);
     response.status(500).send({ status: 'error', error: error.message });
   }
 });

@@ -40,3 +40,4 @@ apps/requital-functions/functions/lib/
 .env.dev
 .env
 .vscode/configurationCache.log
+apps/requital-app/ios/**
