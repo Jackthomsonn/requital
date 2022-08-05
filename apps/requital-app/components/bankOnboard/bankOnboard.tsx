@@ -1,7 +1,5 @@
-import { Dimensions } from 'react-native';
-
 import { Buffer } from 'buffer';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { auth } from '../../firebase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../../contexts/appContext';
@@ -84,7 +82,6 @@ export function BankOnboard() {
       style={{
         display: 'flex',
         flex: 1,
-        width: Dimensions.get('window').width,
         backgroundColor: '#FFF',
       }}
     >

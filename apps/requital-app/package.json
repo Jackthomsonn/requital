@@ -1,10 +1,10 @@
 {
   "name": "requital-app",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "main": "index.js",
   "scripts": {
     "dev": "cp -r .env.local .env && expo start",
-    "build": "cp -r .env.prod .env & eas build --platform=all",
+    "build": "cp -r .env.prod .env & eas build --platform=ios",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",

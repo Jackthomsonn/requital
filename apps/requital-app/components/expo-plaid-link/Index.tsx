@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { WebView } from 'react-native-webview';
 import queryString from 'query-string';
 import { LinkErrorCode, LinkErrorType, LinkExitMetadataStatus } from './const';
+import { useWindowDimensions } from 'react-native';
 
 let reloadUrl = '';
 
@@ -14,6 +15,7 @@ export default function PlaidLink({
 }: any) {
   let webviewRef = useRef<any>();
   let hasReloaded = false;
+  const { width, height } = useWindowDimensions();
 
   const handleNavigationStateChange = (event: any) => {
     if (event.url.includes('receivedRedirectUri')) {
@@ -119,6 +121,7 @@ export default function PlaidLink({
           uri :
           `https://cdn.plaid.com/link/v2/stable/link.html?isWebview=true&token=${linkToken}`,
       }}
+      style={{ width, height }}
       ref={(ref) => (webviewRef = ref as any)}
       onError={() => (webviewRef as any).reload()}
       originWhitelist={['https://*', 'plaidlink://*']}

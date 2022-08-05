@@ -1,5 +1,5 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useMemo } from 'react';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useMemo } from 'react';
 
 import { YourOverview } from '../../components/yourOverview/yourOverview';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -54,14 +54,14 @@ export function HomeScreen() {
   return (
     <SafeAreaView style={styles.host}>
       <ScrollView style={styles.mainView} showsVerticalScrollIndicator={false}>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between'}}>
+        <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' }}>
           <Text style={{ ...styles.title, marginBottom: 24 }}>Offers overview</Text>
           {
-            auth.currentUser
-            && auth.currentUser.photoURL
-            && <Image source={{uri: auth.currentUser.photoURL, width: 40, height: 40}} style={{borderRadius: 100}} />
+            auth.currentUser &&
+            auth.currentUser.photoURL &&
+            <Image source={{ uri: auth.currentUser.photoURL, width: 40, height: 40 }} style={{ borderRadius: 100 }} />
           }
-          </View>
+        </View>
         <View>
           <YourOverview />
         </View>
