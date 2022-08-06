@@ -6,6 +6,7 @@ import { useApp } from '../../contexts/appContext';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import PlaidLink from '../expo-plaid-link/Index';
 import Constants from 'expo-constants';
+import { Alert } from 'react-native';
 
 global.Buffer = Buffer;
 
@@ -25,7 +26,7 @@ export function BankOnboard() {
 
   const generateToken = async () => {
     const response = await fetch(
-      `${Constants.manifest?.extra?.functionUrl}/createLinkToken`,
+      `https://requital.eu.ngrok.io/requital-39e1f/us-central1/createLinkToken`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -51,7 +52,7 @@ export function BankOnboard() {
       }
 
       await fetch(
-        `${Constants.manifest?.extra?.functionUrl}/setAccessToken`,
+        `https://requital.eu.ngrok.io/requital-39e1f/us-central1/setAccessToken`,
         {
           method: 'POST',
           headers: {
@@ -74,7 +75,7 @@ export function BankOnboard() {
   useEffect(() => {
     if (accountIsLinked) navigate('Home');
 
-    generateToken();
+    generateToken().catch((error) => console.log(error));
   }, [accountIsLinked]);
 
   return linkToken || params?.nextFlowUri ? (

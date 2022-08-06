@@ -5,7 +5,7 @@ import { auth, firestore } from '../../firebase';
 
 import { Card } from '../card/card';
 import { Skeleton } from '../skeleton/skeleton';
-import { ActivatedOfferConverter, Business, Offer, OfferConverter } from 'requital-converter';
+import { ActivatedOfferConverter, Business, Offer } from 'requital-converter';
 
 type UIOffers = Offer & {
   company: string,
@@ -21,7 +21,7 @@ export function AllOffers() {
     const query = collectionGroup(
       firestore,
       'offers',
-    ).withConverter(OfferConverter);
+    );
 
     const data = await getDocs(query);
     const docs = [];
@@ -44,7 +44,7 @@ export function AllOffers() {
       });
     }
 
-    setOffers(docs);
+    setOffers(docs as any);
     setIsLoading(false);
   };
 

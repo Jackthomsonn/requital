@@ -18,14 +18,17 @@ lint:
 	$(call header, Lint)
 	npm run lint
 
-
-deploy-functions-prod:
+deploy-functions:
 	$(call header, Deploy functions)
 	(cd apps/requital-functions/functions && npm run deploy)
 
-deploy-app:
-	$(call header, Deploy app)
-	(cd apps/requital-app && npm run build)
+deploy-app-ios:
+	$(call header, Deploy IOS app)
+	(cd apps/requital-app && eas build --platform=ios)
+
+deploy-app-android:
+	$(call header, Deploy Android app)
+	(cd apps/requital-app && eas build --platform=android)
 
 access-secret:
 	$(call header, Access secret)

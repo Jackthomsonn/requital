@@ -1,15 +1,17 @@
+import * as admin from 'firebase-admin';
+
 export class RedeemedOffer {
   constructor(
-    public business: string,
-    public redeemed: boolean,
-    public offerAmount: number,
-    public created: string,
-    public originalOfferId: string,
+    readonly business: string,
+    readonly redeemed: boolean,
+    readonly offerAmount: number,
+    readonly created: string,
+    readonly originalOfferId: string,
   ) {}
 }
 
 export const RedeemedOfferConverter = {
-  toFirestore(offer: RedeemedOffer) {
+  toFirestore(offer: RedeemedOffer): admin.firestore.DocumentData {
     return { business: offer.business, redeemed: offer.redeemed, offerAmount: offer.offerAmount, created: offer.created, originalOfferId: offer.originalOfferId };
   },
   fromFirestore(

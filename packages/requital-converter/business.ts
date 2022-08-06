@@ -1,15 +1,17 @@
+import * as admin from 'firebase-admin';
+
 export class Business {
   constructor(
-    public name: string,
+    readonly name: string,
   ) {}
 }
 
 export const BusinessConverter = {
-  toFirestore(business: Business) {
+  toFirestore(business: Business): admin.firestore.DocumentData {
     return { name: business.name };
   },
   fromFirestore(
-    snapshot: any,
+    snapshot: admin.firestore.QueryDocumentSnapshot,
   ): Business {
     const data = snapshot.data();
 

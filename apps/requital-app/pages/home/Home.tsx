@@ -1,4 +1,4 @@
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useMemo } from 'react';
 
 import { YourOverview } from '../../components/yourOverview/yourOverview';
@@ -9,6 +9,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { auth, firestore } from '../../firebase';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import { UserConverter } from 'requital-converter';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -45,7 +46,7 @@ export function HomeScreen() {
 
     registerForPushNotificationsAsync().then(async (token) => {
       if (token) {
-        const user = doc(firestore, 'users', (auth as any).currentUser.uid);
+        const user = doc(firestore, 'users', auth?.currentUser?.uid as string).withConverter(UserConverter);
 
         await updateDoc(user, { pushToken: token });
       }
@@ -77,9 +78,12 @@ export function HomeScreen() {
 
 async function registerForPushNotificationsAsync() {
   let token;
+
   if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
+
     let finalStatus = existingStatus;
+
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;

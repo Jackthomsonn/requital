@@ -11,7 +11,7 @@ export const triggerNotification = functions.runWith({ ingressSettings: 'ALLOW_A
   const db = admin.firestore();
 
   try {
-    const user = await db.collection('users').doc(request.body.userID).withConverter(UserConverter).get();
+    const user = await db.collection('users').withConverter(UserConverter).doc(request.body.userID).get();
     const expo = new Expo();
     const token = user.data()?.pushToken;
 

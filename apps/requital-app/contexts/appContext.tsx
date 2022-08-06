@@ -18,7 +18,7 @@ export const AppProvider = ({ children }: any) => {
     const userRef = doc(firestore, `users/${auth.currentUser?.uid}`).withConverter(UserConverter);
 
     getDoc(userRef).then((userDoc) => {
-      if (!userDoc.data()?.accessToken || userDoc.data()?.accessToken === '') {
+      if (!userDoc?.data()?.accessToken || userDoc.data()?.accessToken === '') {
         setAccountIsLinked(false);
       } else {
         setAccountIsLinked(true);

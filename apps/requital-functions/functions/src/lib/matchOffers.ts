@@ -19,11 +19,14 @@ export const matchOffers = functions.runWith({ timeoutSeconds: 540, secrets: ['P
   }));
 
   try {
+    functions.logger.debug('Processing transactions', req.body.itemID);
+
     const transactions = await processTransactions(req.body.itemID, client);
 
     response.status(200).send({ status: 'success', data: transactions });
   } catch (error: any) {
-    console.log(error);
+    functions.logger.error('Error when trying match offers: ' + error);
+
     response.status(500).send({ status: 'error', error: error.message });
   }
 });

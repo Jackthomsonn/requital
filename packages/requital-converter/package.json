@@ -8,6 +8,9 @@
   },
   "main": "./lib/index.jsx",
   "types": "./index.tsx",
-  "version": "0.0.0",
-  "license": "MIT"
+  "version": "0.0.2",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-admin": "^11.0.1"
+  }
 }

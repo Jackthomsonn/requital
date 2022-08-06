@@ -1,11 +1,13 @@
+import * as admin from 'firebase-admin';
+
 export class ActivatedOffer {
   constructor(
-    public originalOfferId: string,
+    readonly originalOfferId: string,
   ) {}
 }
 
 export const ActivatedOfferConverter = {
-  toFirestore(activatedOffer: ActivatedOffer) {
+  toFirestore(activatedOffer: ActivatedOffer): admin.firestore.DocumentData {
     return { originalOfferId: activatedOffer.originalOfferId };
   },
   fromFirestore(

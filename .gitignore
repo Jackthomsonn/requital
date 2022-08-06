@@ -2,6 +2,7 @@
 node_modules
 .pnp
 .pnp.js
+.vscode
 
 # testing
 coverage
@@ -36,8 +37,6 @@ firebase-debug.log
 packages/requital-converter/lib/
 apps/requital-app/.expo/
 apps/requital-functions/functions/lib/
-.vscode/settings.json
 .env.dev
 .env
-.vscode/configurationCache.log
 apps/requital-app/ios/**

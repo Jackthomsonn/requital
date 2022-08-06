@@ -1,33 +1,39 @@
+import Expo from 'expo-server-sdk';
 import * as admin from 'firebase-admin';
-
+import * as functions from 'firebase-functions';
 import { PlaidApi, Transaction } from 'plaid';
-
-import { BusinessConverter } from 'requital-converter';
-import { ActivatedOfferConverter } from 'requital-converter';
-import { RedeemedOfferConverter } from 'requital-converter';
-import { OfferConverter } from 'requital-converter';
-import { UserConverter } from 'requital-converter';
+import { ActivatedOfferConverter, BusinessConverter, OfferConverter, RedeemedOfferConverter, UserConverter } from 'requital-converter';
 
 export const processTransactions = async (itemId: string, client: PlaidApi): Promise<void | Transaction[]> => {
   const db = admin.firestore();
 
   try {
+    functions.logger.debug('Processing transactions for item: ' + itemId);
+
     const users = await db.collection('users').withConverter(UserConverter).where('itemID', '==', itemId).get();
+
+    if (users.docs.length === 0) {
+      functions.logger.error('No users found for item: ' + itemId);
+
+      return [];
+    }
+
     const [user, userId] = [users.docs[0].data(), users.docs[0].id];
 
-    const userDoc = await db.collection('users').withConverter(UserConverter).doc(userId).get();
-
-    console.log(`Processing transactions for user ${userId}`);
-    console.log(userDoc.data());
-    let cursor = userDoc.data()?.cursor || '';
+    let cursor = user.cursor || '';
 
     const initialCall = cursor === '';
 
     let hasMore = true;
 
     while (hasMore) {
-      console.log('about to start');
-      if (!user.accessToken) return;
+      if (!user.accessToken) {
+        functions.logger.error('No access token found for item: ' + itemId);
+
+        return [];
+      }
+
+      functions.logger.debug('Fetching transactions for item: ' + itemId);
 
       const result = await client.transactionsSync({
         access_token: user.accessToken,
@@ -35,15 +41,11 @@ export const processTransactions = async (itemId: string, client: PlaidApi): Pro
         cursor: cursor ?? undefined,
       });
 
-      console.log('I am here');
-
       // Handle rate limiting for initial call of all historical transactions
       await new Promise((resolve) => setTimeout(resolve, 1900));
 
       if (!initialCall) {
-        console.log('not the initial call', cursor);
-        console.log('for item:', itemId);
-        console.log(result.data.added);
+        functions.logger.debug('Initial call for item: ' + itemId);
 
         const businessCollection = await db.collection('businesses').withConverter(BusinessConverter).get();
         const userActivatedOffers = await db.collection(`users/${userId}/activated_offers`).withConverter(ActivatedOfferConverter).get();
@@ -102,6 +104,18 @@ export const processTransactions = async (itemId: string, client: PlaidApi): Pro
         await db.collection('users').withConverter(UserConverter).doc(userId).update({
           cursor: result.data.next_cursor,
         });
+
+        const expo = new Expo();
+        const token = user.pushToken;
+
+        if (!token) throw new Error('No token found');
+
+        await expo.sendPushNotificationsAsync([{
+          to: [token],
+          title: 'Your points are going up! 🚀',
+          sound: 'default',
+          body: 'Requital has matched you with new offers! Go check out your new updated requital pointage! 💰',
+        }]);
 
         return result.data.added;
       }

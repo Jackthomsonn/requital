@@ -1,18 +1,20 @@
+import * as admin from 'firebase-admin';
+
 export class User {
   constructor(
-    public accessToken?: string,
-    public itemID?: string,
-    public cursor?: string,
-    public pushToken?: string,
+    readonly accessToken: string,
+    readonly itemID: string,
+    readonly cursor: string,
+    readonly pushToken: string,
   ) {}
 }
 
 export const UserConverter = {
-  toFirestore(user: User) {
+  toFirestore(user: User): admin.firestore.DocumentData {
     return { accessToken: user.accessToken, itemID: user.itemID, cursor: user.cursor, pushToken: user.pushToken };
   },
   fromFirestore(
-    snapshot: {data: () => User},
+    snapshot: any,
   ): User {
     const data = snapshot.data();
 

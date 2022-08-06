@@ -67,11 +67,6 @@ export default function App() {
                 component={BankOnboard}
                 options={{ headerShown: false }}
               />
-              <Stack.Screen
-                name="Onboarding-Next"
-                component={BankOnboard}
-                options={{ headerShown: false }}
-              />
             </>
           )}
 

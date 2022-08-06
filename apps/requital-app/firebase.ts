@@ -13,13 +13,14 @@ const app = initializeApp({
   measurementId: 'G-0X982VHQ2B',
 });
 
+const firestore = getFirestore(app);
+const auth = getAuth(app);
+
 if (Constants.manifest?.extra?.environment === 'local') {
-  const firestore = getFirestore(app);
   connectFirestoreEmulator(firestore, '192.168.0.44', 8080);
 
-  const auth = getAuth(app);
   connectAuthEmulator(auth, 'http://192.168.0.44:9099');
 }
 
-export const firestore = getFirestore(app);
-export const auth = getAuth(app);
+
+export { firestore, auth };

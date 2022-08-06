@@ -21,8 +21,5 @@
     "npm": ">=7.0.0",
     "node": "16"
   },
-  "dependencies": {
-    "requital-converter": "^0.0.0"
-  },
   "packageManager": "npm@8.3.0"
 }

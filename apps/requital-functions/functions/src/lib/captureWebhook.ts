@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
-
 import * as functions from 'firebase-functions';
+
 import { Configuration, PlaidApi, PlaidEnvironments, SyncUpdatesAvailableWebhook, WebhookType } from 'plaid';
 import { processTransactions } from '../offerEngine';
 
@@ -21,11 +21,13 @@ export const captureWebhook = functions.runWith({ timeoutSeconds: 540, secrets: 
     const payload: SyncUpdatesAvailableWebhook = request.body;
 
     if (!payload) {
+      functions.logger.error('No payload found in webhook');
       response.status(400).send({ status: 'error', error: 'No payload' });
       return;
     }
 
     if (!payload.webhook_type) {
+      functions.logger.error('No webhook_type found in webhook');
       response
         .status(400)
         .send({ status: 'error', error: 'No webhook type provided' });
@@ -33,6 +35,7 @@ export const captureWebhook = functions.runWith({ timeoutSeconds: 540, secrets: 
     }
 
     if (payload.webhook_type !== WebhookType.Transactions) {
+      functions.logger.info('Webhook type is not transactions');
       response.status(200).json({
         status: 'skipped',
         error: `Webhook type ${payload.webhook_type} is not supported`,
@@ -43,6 +46,7 @@ export const captureWebhook = functions.runWith({ timeoutSeconds: 540, secrets: 
     const supportedWebhookCodes = ['SYNC_UPDATES_AVAILABLE'];
 
     if (!supportedWebhookCodes.includes(payload.webhook_code)) {
+      functions.logger.info('Webhook code is not supported');
       response.status(200).json({
         status: 'skipped',
         error: `Webhook code ${payload.webhook_code} is not supported`,
@@ -55,6 +59,7 @@ export const captureWebhook = functions.runWith({ timeoutSeconds: 540, secrets: 
 
       response.status(200).send({ status: 'success', data: transactions });
     } catch (error) {
+      functions.logger.error('Error when invoking capture webhook', error);
       response.status(500).send({ status: 'error', error });
     }
   },
