@@ -1,5 +1,4 @@
 export const mockPlaid = {
-
   PlaidEnvironments: {
     development: '',
   },
@@ -32,13 +31,18 @@ export const mockPlaid = {
           },
         });
       },
-      itemPublicTokenExchange: (object: any) => {
-        // expect(object).toEqual({
-        //   public_token: options.itemPublicTokenExchange.public_token,
-        // });
+      itemPublicTokenExchange: () => {
         return Promise.resolve({
           data: {
             item_id: 'test_item_id',
+          },
+        });
+      },
+      transactionsSync: () => {
+        return Promise.resolve({
+          data: {
+            has_more: false,
+            next_cursor: 'test-next-cursor',
           },
         });
       },

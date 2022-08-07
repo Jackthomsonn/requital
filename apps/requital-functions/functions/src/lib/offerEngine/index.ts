@@ -1,4 +1,4 @@
-import Expo from 'expo-server-sdk';
+import { Expo } from 'expo-server-sdk';
 import { firestore } from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { PlaidApi, Transaction } from 'plaid';
@@ -45,7 +45,7 @@ export const processTransactions = async (itemId: string, client: PlaidApi): Pro
       await new Promise((resolve) => setTimeout(resolve, 1900));
 
       if (!initialCall) {
-        functions.logger.debug('Initial call for item: ' + itemId);
+        functions.logger.debug('Finding transactions for item: ' + itemId);
 
         const businessCollection = await db.collection('businesses').withConverter(BusinessConverter).get();
         const userActivatedOffers = await db.collection(`users/${userId}/activated_offers`).withConverter(ActivatedOfferConverter).get();
