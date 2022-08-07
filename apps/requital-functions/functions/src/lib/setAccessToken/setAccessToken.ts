@@ -1,4 +1,4 @@
-import * as admin from 'firebase-admin';
+import { firestore } from 'firebase-admin';
 
 import * as functions from 'firebase-functions';
 import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
@@ -6,8 +6,6 @@ import { UserConverter } from 'requital-converter';
 import { processTransactions } from '../offerEngine';
 
 export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 'PLAID_SECRET'], ingressSettings: 'ALLOW_ALL' }).https.onRequest(async (request, response) => {
-  if (!admin.apps.length) admin.initializeApp();
-
   const client = new PlaidApi(new Configuration({
     basePath: PlaidEnvironments.development,
     baseOptions: {
@@ -18,7 +16,7 @@ export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', '
     },
   }));
 
-  const db = admin.firestore();
+  const db = firestore();
 
   try {
     functions.logger.debug('Exchanging public token');
@@ -37,16 +35,16 @@ export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', '
 
     functions.logger.debug('Get user for item: ' + itemID);
 
-    await db.collection('users').withConverter(UserConverter).doc(request.body.uid).set({
+    await db.collection('users').withConverter(UserConverter).doc(request.body.uid).update({
       accessToken: res.data.access_token,
       itemID,
-    }, { merge: true });
+    });
 
     processTransactions(itemID, client);
 
     response.status(200).json({ status: 'success' });
   } catch (error) {
-    response.status(500).send({
+    response.status(500).json({
       status: 'error',
       error,
     });

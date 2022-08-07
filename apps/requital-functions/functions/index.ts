@@ -1,17 +1,17 @@
-import { setAccessToken } from './src/lib/setAccessToken';
-import { createLinkToken } from './src/lib/createLinkToken';
-import { matchOffers } from './src/lib/matchOffers';
-import { triggerWebhook } from './src/lib/triggerWebhook';
-import { captureWebhook } from './src/lib/captureWebhook';
-import { createUser } from './src/lib/createUser';
-import { triggerNotification } from './src/lib/testpn';
+import { setAccessToken } from './src/lib/setAccessToken/setAccessToken';
+import { createLinkToken } from './src/lib/createLinkToken/createLinkToken';
+import { matchOffers } from './src/lib/matchOffers/matchOffers';
+import { captureWebhook } from './src/lib/captureWebhook/captureWebhook';
+import { createUser } from './src/lib/createUser/createUser';
+import * as admin from 'firebase-admin';
+
+admin.initializeApp();
+admin.firestore().settings({ ignoreUndefinedProperties: true });
 
 export {
   createLinkToken,
   setAccessToken,
   matchOffers,
-  triggerWebhook,
   captureWebhook,
   createUser,
-  triggerNotification,
 };

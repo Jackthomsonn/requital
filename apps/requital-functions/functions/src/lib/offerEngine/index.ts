@@ -1,11 +1,11 @@
 import Expo from 'expo-server-sdk';
-import * as admin from 'firebase-admin';
+import { firestore } from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { PlaidApi, Transaction } from 'plaid';
 import { ActivatedOfferConverter, BusinessConverter, OfferConverter, RedeemedOfferConverter, UserConverter } from 'requital-converter';
 
 export const processTransactions = async (itemId: string, client: PlaidApi): Promise<void | Transaction[]> => {
-  const db = admin.firestore();
+  const db = firestore();
 
   try {
     functions.logger.debug('Processing transactions for item: ' + itemId);
@@ -112,9 +112,9 @@ export const processTransactions = async (itemId: string, client: PlaidApi): Pro
 
         await expo.sendPushNotificationsAsync([{
           to: [token],
-          title: 'Your points are going up! 🚀',
+          title: 'Requital points incoming 🚀',
           sound: 'default',
-          body: 'Requital has matched you with new offers! Go check out your new updated requital pointage! 💰',
+          body: 'We have matched you with new offers! 💰',
         }]);
 
         return result.data.added;

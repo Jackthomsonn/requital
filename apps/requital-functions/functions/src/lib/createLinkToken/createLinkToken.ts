@@ -36,7 +36,7 @@ export const createLinkToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 
     response.status(200).json(createTokenResponse.data);
   } catch (error) {
     functions.logger.error('Error creating link token', error);
-    response.status(500).send({
+    response.status(500).json({
       status: 'error',
       error,
     });

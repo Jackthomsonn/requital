@@ -10,7 +10,9 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "grab:port": "lsof -i tcp:4000"
+    "grab:port": "lsof -i tcp:4000",
+    "test:debug": "jest",
+    "test": "jest --silent"
   },
   "engines": {
     "node": "16"
@@ -27,7 +29,10 @@
     "requital-converter": "*"
   },
   "devDependencies": {
+    "@types/jest": "^28.1.6",
     "firebase-functions-test": "latest",
+    "jest": "^28.1.3",
+    "ts-jest": "^28.0.7",
     "typescript": "^4.7.4"
   },
   "private": true

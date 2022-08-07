@@ -1,4 +1,4 @@
-import * as admin from 'firebase-admin';
+import { firestore } from 'firebase-admin';
 
 export class RedeemedOffer {
   constructor(
@@ -11,7 +11,7 @@ export class RedeemedOffer {
 }
 
 export const RedeemedOfferConverter = {
-  toFirestore(offer: RedeemedOffer): admin.firestore.DocumentData {
+  toFirestore(offer: RedeemedOffer): firestore.DocumentData {
     return { business: offer.business, redeemed: offer.redeemed, offerAmount: offer.offerAmount, created: offer.created, originalOfferId: offer.originalOfferId };
   },
   fromFirestore(

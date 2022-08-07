@@ -1,4 +1,4 @@
-import { Alert, Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useMemo } from 'react';
 
 import { YourOverview } from '../../components/yourOverview/yourOverview';

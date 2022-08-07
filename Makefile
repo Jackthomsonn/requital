@@ -4,7 +4,7 @@ endef
 
 init:
 	$(call header, Initialise apps)
-	npm i && cd apps/requital-app && expo install && cd .. && cd requital-functions && npm i
+	npm i
 
 run-apps:
 	$(call header, Run apps)
@@ -22,13 +22,17 @@ deploy-functions:
 	$(call header, Deploy functions)
 	(cd apps/requital-functions/functions && npm run deploy)
 
-deploy-app-ios:
-	$(call header, Deploy IOS app)
+build-app-ios:
+	$(call header, Build IOS app)
 	(cd apps/requital-app && eas build --platform=ios)
 
-deploy-app-android:
-	$(call header, Deploy Android app)
-	(cd apps/requital-app && eas build --platform=android)
+publish-app-ios:
+	$(call header, Publish IOS app)
+	(cd apps/requital-app && eas submit --platform=ios)
+
+publish-converters:
+	$(call header, Publish converters)
+	(cd apps/requital-converters && npm publish)
 
 access-secret:
 	$(call header, Access secret)

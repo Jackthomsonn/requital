@@ -1,4 +1,4 @@
-import * as admin from 'firebase-admin';
+import { firestore } from 'firebase-admin';
 
 export class Offer {
   constructor(
@@ -9,11 +9,11 @@ export class Offer {
 }
 
 export const OfferConverter = {
-  toFirestore(offer: Offer): admin.firestore.DocumentData {
+  toFirestore(offer: Offer): firestore.DocumentData {
     return { description: offer.description, offerAmount: offer.offerAmount, threshold: offer.threshold };
   },
   fromFirestore(
-    snapshot: admin.firestore.QueryDocumentSnapshot,
+    snapshot: firestore.QueryDocumentSnapshot,
   ): Offer {
     const data = snapshot.data();
 

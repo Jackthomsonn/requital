@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 export default {
   name: 'Requital',
-  version: '1.0.16',
+  version: '1.0.17',
   scheme: 'requital',
   extra: {
     clientId: process.env.CLIENT_ID,

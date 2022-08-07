@@ -1,4 +1,4 @@
-import * as admin from 'firebase-admin';
+import { firestore } from 'firebase-admin';
 
 export class User {
   constructor(
@@ -10,7 +10,7 @@ export class User {
 }
 
 export const UserConverter = {
-  toFirestore(user: User): admin.firestore.DocumentData {
+  toFirestore(user: User): firestore.DocumentData {
     return { accessToken: user.accessToken, itemID: user.itemID, cursor: user.cursor, pushToken: user.pushToken };
   },
   fromFirestore(
