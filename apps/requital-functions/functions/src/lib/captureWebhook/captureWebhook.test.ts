@@ -2,11 +2,14 @@ import { mockOfferEngine } from '../../mocks/offerEngine';
 import { mockPlaid } from '../../mocks/plaid';
 import { captureWebhook } from './captureWebhook';
 
-jest.mock('../offerEngine', () => mockOfferEngine([]));
+const processTransactionsSpy = jest.fn(() => Promise.resolve([]));
 
-jest.mock('plaid', () => mockPlaid);
+jest.mock('../offerEngine', () => mockOfferEngine([], () => processTransactionsSpy()));
 
 describe('captureWebhook test', () => {
+  beforeEach(() => {
+    jest.mock('plaid', () => mockPlaid);
+  });
   test('should handle SYNC_UPDATES_AVAILABLE webhoook requests successfully', async () => {
     const req: any = {
       body: {
@@ -27,6 +30,8 @@ describe('captureWebhook test', () => {
     };
 
     await captureWebhook(req, res);
+
+    expect(processTransactionsSpy).toHaveBeenCalled();
   });
 
   test('should fail if no payload exists', async () => {
@@ -46,6 +51,8 @@ describe('captureWebhook test', () => {
     };
 
     await captureWebhook(req, res);
+
+    expect(processTransactionsSpy).not.toHaveBeenCalled();
   });
 
   test('should fail if no webhook_type exists', async () => {
@@ -67,6 +74,8 @@ describe('captureWebhook test', () => {
     };
 
     await captureWebhook(req, res);
+
+    expect(processTransactionsSpy).not.toHaveBeenCalled();
   });
 
   test('should skip if webhook_type is not transactions', async () => {
@@ -89,6 +98,8 @@ describe('captureWebhook test', () => {
     };
 
     await captureWebhook(req, res);
+
+    expect(processTransactionsSpy).not.toHaveBeenCalled();
   });
 
   test('should skip if webhook_code is not supported', async () => {
@@ -111,5 +122,7 @@ describe('captureWebhook test', () => {
     };
 
     await captureWebhook(req, res);
+
+    expect(processTransactionsSpy).not.toHaveBeenCalled();
   });
 });

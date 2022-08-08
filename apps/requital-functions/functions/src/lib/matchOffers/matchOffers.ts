@@ -1,9 +1,11 @@
+import { firestore } from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { PlaidApi, Configuration, PlaidEnvironments } from 'plaid';
+import { UserConverter } from 'requital-converter';
 
 import { processTransactions } from '../offerEngine/index';
 
-export const matchOffers = functions.runWith({ timeoutSeconds: 540, secrets: ['PLAID_CLIENT_ID', 'PLAID_SECRET'], ingressSettings: 'ALLOW_ALL' }).https.onRequest(async (req, response) => {
+export const matchOffers = functions.runWith({ timeoutSeconds: 540, secrets: ['PLAID_CLIENT_ID', 'PLAID_SECRET'], ingressSettings: 'ALLOW_ALL' }).pubsub.schedule('every 1 hours').onRun(async (_ctx) => {
   const client = new PlaidApi(new Configuration({
     basePath: PlaidEnvironments.development,
     baseOptions: {
@@ -14,15 +16,22 @@ export const matchOffers = functions.runWith({ timeoutSeconds: 540, secrets: ['P
     },
   }));
 
+  const db = firestore();
+
   try {
-    functions.logger.debug('Processing transactions', req.body.itemID);
+    functions.logger.debug('Finding users to process transactions on');
 
-    const transactions = await processTransactions(req.body.itemID, client);
+    const userDocs = await db.collection('users').withConverter(UserConverter).get();
 
-    response.status(200).json({ status: 'success', data: transactions });
+    functions.logger.debug('Found users', { numberOfUsersToProcessTransactionsFor: userDocs.docs.length });
+
+    for (const doc of userDocs.docs) {
+      await processTransactions(doc.data().itemID, client);
+    }
+
+    return null;
   } catch (error: any) {
     functions.logger.error('Error when trying match offers: ' + error);
-
-    response.status(500).json({ status: 'error', error: error.message });
+    return null;
   }
 });

@@ -3,7 +3,7 @@ import { firestore } from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
 import { UserConverter } from 'requital-converter';
-import { processTransactions } from '../offerEngine';
+import { PubSub } from '@google-cloud/pubsub';
 
 export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 'PLAID_SECRET'], ingressSettings: 'ALLOW_ALL' }).https.onRequest(async (request, response) => {
   const client = new PlaidApi(new Configuration({
@@ -40,7 +40,15 @@ export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', '
       itemID,
     });
 
-    processTransactions(itemID, client);
+    functions.logger.debug('Requesting initial pull of data for item: ' + itemID);
+
+    const pubsub = new PubSub();
+
+    await pubsub.topic('initial-pull').publishMessage({
+      data: Buffer.from(JSON.stringify({ itemID })),
+    });
+
+    functions.logger.debug('Initial pull message sent');
 
     response.status(200).json({ status: 'success' });
   } catch (error) {

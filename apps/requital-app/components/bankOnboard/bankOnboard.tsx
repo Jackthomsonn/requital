@@ -27,6 +27,9 @@ export function BankOnboard() {
       'https://us-central1-requital-39e1f.cloudfunctions.net/createLinkToken',
       {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           userId: auth.currentUser?.uid,
         }),
@@ -71,7 +74,10 @@ export function BankOnboard() {
   );
 
   useEffect(() => {
-    if (accountIsLinked) navigate('Home');
+    if (accountIsLinked) {
+      navigate('Home');
+      return;
+    }
 
     generateToken().catch((error) => console.log(error));
   }, [accountIsLinked]);

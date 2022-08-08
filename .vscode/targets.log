@@ -10,11 +10,10 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
 
 
-# Make data base, printed on Thu Aug  4 17:00:01 2022
+# Make data base, printed on Mon Aug  8 22:00:26 2022
 
 # Variables
 
- 
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
@@ -36,7 +35,8 @@ _ = /usr/bin/make
 # environment
 WALLABY_PRODUCTION = true
 # environment
-STARSHIP_SESSION_KEY = 1609831836714292
+ 
+STARSHIP_SESSION_KEY = 2383827958384627
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
@@ -44,7 +44,7 @@ INFOPATH = /opt/homebrew/share/info:
 # environment
 VSCODE_CWD = /
 # environment
-PATH = /Users/jackthomson/.helmenv/bin:/Users/jackthomson/.asdf/shims:/Users/jackthomson/.asdf/bin:/Users/jackthomson/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
+PATH = /opt/homebrew/opt/gnu-getopt/bin:/Users/jackthomson/.helmenv/bin:/Users/jackthomson/.asdf/shims:/Users/jackthomson/.asdf/bin:/Users/jackthomson/google-cloud-sdk/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
 # environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # makefile (from `Makefile', line 1)
@@ -72,7 +72,7 @@ HOME = /Users/jackthomson
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/jackthomson/Library/Application Support/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
+VSCODE_CODE_CACHE_PATH = /Users/jackthomson/Library/Application Support/Code/CachedData/da76f93349a72022ca4670c1b84860304616aaa2
 # environment
 LOGNAME = jackthomson
 # environment
@@ -110,10 +110,9 @@ MAKE_COMMAND := /Applications/Xcode.app/Contents/Developer/usr/bin/make
 # environment
 TMPDIR = /var/folders/x1/1r62c70j57g9cjtjw1xxd6x40000gn/T/
 # automatic
- 
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/jackthomson/Library/Application Support/Code/1.69.2-main.sock
+VSCODE_IPC_HOOK = /Users/jackthomson/Library/Application Support/Code/1.70.0-main.sock
 # environment
 MallocNanoZone = 0
 # makefile
@@ -123,7 +122,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.2361089.2361095
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.8816967.8816973
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
@@ -155,7 +154,7 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 13586
+VSCODE_PID = 84479
 # environment
 STARSHIP_SHELL = zsh
 # variable set hash-table stats:
@@ -177,6 +176,24 @@ STARSHIP_SHELL = zsh
 
 # Files
 
+build-app-ios:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 26):
+	$(call header, Build IOS app)
+	(cd apps/requital-app && eas build --platform=ios)
+	
+
+deploy-functions:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 22):
+	$(call header, Deploy functions)
+	(cd apps/requital-functions/functions && npm run deploy)
+	
+
 # Not a target:
 all:
 #  Command-line target.
@@ -185,15 +202,6 @@ all:
 #  File has not been updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-
-deploy-app:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 30):
-	$(call header, Deploy app)
-	(cd apps/requital-app && npm run build)
-	
 
 # Not a target:
 .SUFFIXES:
@@ -204,27 +212,27 @@ deploy-app:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-03 20:14:07
+#  Last modified 2022-08-06 23:59:06
+ 
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
-deploy-functions-prod:
+publish-app-ios:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 26):
-	$(call header, Deploy functions)
-	(cd apps/requital-functions/functions && npm run deploy)
+#  commands to execute (from `Makefile', line 30):
+	$(call header, Publish IOS app)
+	(cd apps/requital-app && eas submit --platform=ios)
 	
 
- 
 set-secret:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 18):
+#  commands to execute (from `Makefile', line 42):
 	$(call header, Set secret)
 	cd apps/requital-functions/functions && npx firebase functions:secrets:set $(KEY)
 	
@@ -235,11 +243,20 @@ set-secret:
 #  Modification time never checked.
 #  File has not been updated.
 
+publish-converters:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 34):
+	$(call header, Publish converters)
+	(cd apps/requital-converters && npm publish)
+	
+
 access-secret:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 14):
+#  commands to execute (from `Makefile', line 38):
 	$(call header, Access secret)
 	cd apps/requital-functions/functions && npx firebase functions:secrets:access $(KEY)
 	
@@ -248,7 +265,7 @@ prune-secrets:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 22):
+#  commands to execute (from `Makefile', line 46):
 	$(call header, Get secrets)
 	cd apps/requital-functions/functions && npx firebase functions:secrets:prune
 	
@@ -259,7 +276,25 @@ init:
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 6):
 	$(call header, Initialise apps)
-	npm i && cd apps/requital-app && expo install
+	npm i
+	
+
+setup-tunnel:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 14):
+	$(call header, Setup tunnel)
+	npm run setup-tunnel
+	
+
+lint:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 18):
+	$(call header, Lint)
+	npm run lint
 	
 
 run-apps:
@@ -272,7 +307,7 @@ run-apps:
 	
 
 # files hash-table stats:
-# Load=11/1024=1%, Rehash=0, Collisions=0/23=0%
+# Load=15/1024=1%, Rehash=0, Collisions=0/27=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -284,6 +319,6 @@ run-apps:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Thu Aug  4 17:00:01 2022
+# Finished Make data base on Mon Aug  8 22:00:26 2022
 
  

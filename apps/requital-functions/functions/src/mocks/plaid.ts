@@ -8,10 +8,10 @@ export const mockPlaid = {
     Transactions: 'transactions',
   },
   CountryCode: {
-    Gb: 'gb',
+    Gb: 'GB',
   },
   WebhookType: {
-    Transactions: 'transactions',
+    Transactions: 'TRANSACTIONS',
   },
   PlaidApi: jest.fn(() => {
     return {
@@ -23,7 +23,7 @@ export const mockPlaid = {
           language: 'en',
           webhook: `${process.env.WEBHOOK_URL}/captureWebhook`,
           redirect_uri: 'https://create-react-app-gold-zeta-41.vercel.app',
-          country_codes: ['gb'],
+          country_codes: ['GB'],
         });
         return Promise.resolve({
           data: {

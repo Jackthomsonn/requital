@@ -32,5 +32,10 @@ export const mockFirebase = (docs: any[]) => {
         }),
       };
     }),
+    messaging: () => {
+      return {
+        sendToTopic: jest.fn(),
+      };
+    },
   };
 };

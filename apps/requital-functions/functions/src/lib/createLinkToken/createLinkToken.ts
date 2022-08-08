@@ -13,6 +13,7 @@ export const createLinkToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 
     },
   }));
 
+  // Can remove parse when v18 is out
   const { userId } = JSON.parse(request.body);
 
   try {
@@ -34,8 +35,8 @@ export const createLinkToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 
     }
 
     response.status(200).json(createTokenResponse.data);
-  } catch (error) {
-    functions.logger.error('Error creating link token', error);
+  } catch (error: any) {
+    functions.logger.error('Error creating link token', error.message);
     response.status(500).json({
       status: 'error',
       error,

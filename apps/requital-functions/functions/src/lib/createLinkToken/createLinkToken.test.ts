@@ -6,6 +6,7 @@ jest.mock('plaid', () => mockPlaid);
 describe('createLinkToken test', () => {
   test('should create a token link successfully', async () => {
     const req: any = {
+      // Can remove stringify when v18 is out
       body: JSON.stringify({
         userId: 'test-user',
       }),

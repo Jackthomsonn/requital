@@ -3,7 +3,6 @@ import { mockPlaid } from '../../mocks/plaid';
 import { setAccessToken } from './setAccessToken';
 
 jest.mock('plaid', () => mockPlaid);
-
 jest.mock('firebase-admin', () => mockFirebase([]));
 
 describe('setAccessToken test', () => {
