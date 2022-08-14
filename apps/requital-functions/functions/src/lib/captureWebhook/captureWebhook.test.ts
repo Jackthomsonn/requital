@@ -1,16 +1,18 @@
-import { mockOfferEngine } from '../../mocks/offerEngine';
-import { mockPlaid } from '../../mocks/plaid';
+import { mockProcessTransactions } from '../../../tests/mocks/processTransactions';
+import { mockPlaid } from '../../../tests/mocks/plaid';
 import { captureWebhook } from './captureWebhook';
 
 const processTransactionsSpy = jest.fn(() => Promise.resolve([]));
 
-jest.mock('../offerEngine', () => mockOfferEngine([], () => processTransactionsSpy()));
+jest.mock('../processTransactions/processTransactions', () => mockProcessTransactions([], () => processTransactionsSpy()));
 
 describe('captureWebhook test', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     jest.mock('plaid', () => mockPlaid);
   });
+
   test('should handle SYNC_UPDATES_AVAILABLE webhoook requests successfully', async () => {
+    // Arrange
     const req: any = {
       body: {
         webhook_type: mockPlaid.WebhookType.Transactions,
@@ -19,43 +21,51 @@ describe('captureWebhook test', () => {
     };
 
     const res: any = {
-      status: (status: number) => {
-        expect(status).toBe(200);
+      status: jest.fn(() => {
         return {
-          json: jest.fn((payload) => {
-            expect(payload).toEqual({ status: 'success', data: [] });
-          }),
+          json: jsonResponse,
         };
-      },
+      }),
     };
 
+    const jsonResponse = jest.fn();
+
+    // Act
     await captureWebhook(req, res);
 
+    // Assert
     expect(processTransactionsSpy).toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(jsonResponse).toHaveBeenCalledWith({ status: 'success', data: [] });
   });
 
   test('should fail if no payload exists', async () => {
+    // Arrange
     const req: any = {
       body: undefined,
     };
 
     const res: any = {
-      status: (status: number) => {
-        expect(status).toBe(400);
+      status: jest.fn(() => {
         return {
-          json: jest.fn((payload) => {
-            expect(payload).toEqual({ status: 'error', error: 'No payload' });
-          }),
+          json: jsonResponse,
         };
-      },
+      }),
     };
 
+    const jsonResponse = jest.fn();
+
+    // Act
     await captureWebhook(req, res);
 
+    // Assert
     expect(processTransactionsSpy).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(jsonResponse).toHaveBeenCalledWith({ status: 'error', error: 'No payload' });
   });
 
   test('should fail if no webhook_type exists', async () => {
+    // Arrange
     const req: any = {
       body: {
         webhook_code: 'SYNC_UPDATES_AVAILABLE',
@@ -63,22 +73,26 @@ describe('captureWebhook test', () => {
     };
 
     const res: any = {
-      status: (status: number) => {
-        expect(status).toBe(400);
+      status: jest.fn(() => {
         return {
-          json: jest.fn((payload) => {
-            expect(payload).toEqual({ status: 'error', error: 'No webhook type provided' });
-          }),
+          json: jsonResponse,
         };
-      },
+      }),
     };
 
+    const jsonResponse = jest.fn();
+
+    // Act
     await captureWebhook(req, res);
 
+    // Assert
     expect(processTransactionsSpy).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(jsonResponse).toHaveBeenCalledWith({ status: 'error', error: 'No webhook type provided' });
   });
 
   test('should skip if webhook_type is not transactions', async () => {
+    // Arrange
     const req: any = {
       body: {
         webhook_code: 'SYNC_UPDATES_AVAILABLE',
@@ -87,22 +101,26 @@ describe('captureWebhook test', () => {
     };
 
     const res: any = {
-      status: (status: number) => {
-        expect(status).toBe(200);
+      status: jest.fn((status: number) => {
         return {
-          json: jest.fn((payload) => {
-            expect(payload).toEqual({ status: 'skipped', error: 'Webhook type Holdings is not supported' });
-          }),
+          json: jsonResponse,
         };
-      },
+      }),
     };
 
+    const jsonResponse = jest.fn();
+
+    // Act
     await captureWebhook(req, res);
 
+    // Assert
     expect(processTransactionsSpy).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(jsonResponse).toHaveBeenCalledWith({ status: 'skipped', error: 'Webhook type Holdings is not supported' });
   });
 
   test('should skip if webhook_code is not supported', async () => {
+    // Arrange
     const req: any = {
       body: {
         webhook_code: 'INITIAL_UPDATE',
@@ -111,18 +129,21 @@ describe('captureWebhook test', () => {
     };
 
     const res: any = {
-      status: (status: number) => {
-        expect(status).toBe(200);
+      status: jest.fn(() => {
         return {
-          json: jest.fn((payload) => {
-            expect(payload).toEqual({ status: 'skipped', error: 'Webhook code INITIAL_UPDATE is not supported' });
-          }),
+          json: jsonResponse,
         };
-      },
+      }),
     };
 
+    const jsonResponse = jest.fn();
+
+    // Act
     await captureWebhook(req, res);
 
+    // Assert
     expect(processTransactionsSpy).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(jsonResponse).toHaveBeenCalledWith({ status: 'skipped', error: 'Webhook code INITIAL_UPDATE is not supported' });
   });
 });

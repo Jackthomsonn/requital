@@ -7,7 +7,7 @@ export const createUser = functions.runWith({ ingressSettings: 'ALLOW_ALL' }).au
   const db = firestore();
 
   try {
-    functions.logger.debug('Creating user', user.uid);
+    functions.logger.debug('Creating user', { userId: user.uid });
 
     await db.collection('users').withConverter(UserConverter).doc(user.uid).set({
       cursor: '',
@@ -16,7 +16,6 @@ export const createUser = functions.runWith({ ingressSettings: 'ALLOW_ALL' }).au
       pushToken: '',
     });
   } catch (error) {
-    functions.logger.error('Error when trying to create user', error);
-    throw new Error(error as any);
+    functions.logger.error('Error when trying to create user', { error });
   }
 });

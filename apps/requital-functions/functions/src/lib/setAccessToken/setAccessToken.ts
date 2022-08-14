@@ -33,14 +33,14 @@ export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', '
 
     const itemID = res.data.item_id;
 
-    functions.logger.debug('Get user for item: ' + itemID);
+    functions.logger.debug('Get user for item', { itemID });
 
     await db.collection('users').withConverter(UserConverter).doc(request.body.uid).update({
       accessToken: res.data.access_token,
       itemID,
     });
 
-    functions.logger.debug('Requesting initial pull of data for item: ' + itemID);
+    functions.logger.debug('Requesting initial pull of data for item', { itemID });
 
     const pubsub = new PubSub();
 

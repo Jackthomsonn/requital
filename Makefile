@@ -18,6 +18,10 @@ lint:
 	$(call header, Lint)
 	npm run lint
 
+test:
+	$(call header, Test)
+	npm run test
+
 deploy-functions:
 	$(call header, Deploy functions)
 	(cd apps/requital-functions/functions && npm run deploy)

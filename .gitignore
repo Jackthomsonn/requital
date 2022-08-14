@@ -40,3 +40,4 @@ apps/requital-functions/functions/lib/
 .env.dev
 .env
 apps/requital-app/ios/**
+apps/requital-functions/functions/tests/integration/processTransactions/service_account.json
