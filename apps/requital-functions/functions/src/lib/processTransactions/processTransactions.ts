@@ -80,7 +80,7 @@ export const processTransactions = async (itemId: string, client: PlaidApi, tran
             functions.logger.debug('Fetching redeemed offers for user', { userId });
             const userRedeemedOffers = await db.collection(`users/${userId}/redeemed_offers`).withConverter(RedeemedOfferConverter).get();
 
-            if (transactionMerchantHasBeenMatchedToABusiness(business.name, transaction.merchant_name)) {
+            if (transactionMerchantHasBeenMatchedToABusiness(business.name, transaction)) {
               const offers = await db.collection(`businesses/${id}/offers`).withConverter(OfferConverter).get();
 
               for (const offerDoc of offers.docs) {
