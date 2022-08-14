@@ -89,8 +89,6 @@ export const processTransactions = async (itemId: string, client: PlaidApi, tran
                   offerDoc.data(),
                 ];
 
-                console.log(transaction.transaction_code);
-
                 const { allChecksPassed } = performChecks(
                   [
                     offerIsActivated(userActivatedOffers.docs, offerId),
