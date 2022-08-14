@@ -1,6 +1,7 @@
 import { mockProcessTransactions } from '../../../tests/mocks/processTransactions';
 import { mockPlaid } from '../../../tests/mocks/plaid';
 import { captureWebhook } from './captureWebhook';
+import { Status } from '../enums/status';
 
 const processTransactionsSpy = jest.fn(() => Promise.resolve([]));
 
@@ -36,7 +37,7 @@ describe('captureWebhook test', () => {
     // Assert
     expect(processTransactionsSpy).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(jsonResponse).toHaveBeenCalledWith({ status: 'success', data: [] });
+    expect(jsonResponse).toHaveBeenCalledWith({ status: Status.SUCCESS, data: [] });
   });
 
   test('should fail if no payload exists', async () => {
@@ -61,7 +62,7 @@ describe('captureWebhook test', () => {
     // Assert
     expect(processTransactionsSpy).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(jsonResponse).toHaveBeenCalledWith({ status: 'error', error: 'No payload' });
+    expect(jsonResponse).toHaveBeenCalledWith({ status: Status.ERROR, reason: 'No payload' });
   });
 
   test('should fail if no webhook_type exists', async () => {
@@ -88,7 +89,7 @@ describe('captureWebhook test', () => {
     // Assert
     expect(processTransactionsSpy).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(jsonResponse).toHaveBeenCalledWith({ status: 'error', error: 'No webhook type provided' });
+    expect(jsonResponse).toHaveBeenCalledWith({ status: Status.ERROR, reason: 'No webhook type provided' });
   });
 
   test('should skip if webhook_type is not transactions', async () => {
@@ -116,7 +117,7 @@ describe('captureWebhook test', () => {
     // Assert
     expect(processTransactionsSpy).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(jsonResponse).toHaveBeenCalledWith({ status: 'skipped', error: 'Webhook type Holdings is not supported' });
+    expect(jsonResponse).toHaveBeenCalledWith({ status: Status.SKIPPED, reason: 'Webhook type Holdings is not supported' });
   });
 
   test('should skip if webhook_code is not supported', async () => {
@@ -144,6 +145,6 @@ describe('captureWebhook test', () => {
     // Assert
     expect(processTransactionsSpy).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(jsonResponse).toHaveBeenCalledWith({ status: 'skipped', error: 'Webhook code INITIAL_UPDATE is not supported' });
+    expect(jsonResponse).toHaveBeenCalledWith({ status: Status.SKIPPED, reason: 'Webhook code INITIAL_UPDATE is not supported' });
   });
 });

@@ -1,5 +1,6 @@
 import { mockFirebase } from '../../../tests/mocks/firebase';
 import { mockPlaid } from '../../../tests/mocks/plaid';
+import { Status } from '../enums/status';
 import { setAccessToken } from './setAccessToken';
 
 const publishMessageSpy = jest.fn(() =>Promise.resolve({}));
@@ -42,7 +43,7 @@ describe('setAccessToken', () => {
 
       // Assert
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(jsonResponse).toHaveBeenCalledWith({ status: 'success' });
+      expect(jsonResponse).toHaveBeenCalledWith({ status: Status.SUCCESS, data: [] });
     });
 
     test('should publish an initial pull message', async () => {
@@ -70,7 +71,7 @@ describe('setAccessToken', () => {
       // Assert
       expect(publishMessageSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(jsonResponse).toHaveBeenCalledWith({ status: 'success' });
+      expect(jsonResponse).toHaveBeenCalledWith({ status: Status.SUCCESS, data: [] });
     });
   });
 
@@ -107,7 +108,7 @@ describe('setAccessToken', () => {
 
       // Assert
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(jsonResponse).toHaveBeenCalledWith({ status: 'error', error: new Error('No item id returned') });
+      expect(jsonResponse).toHaveBeenCalledWith({ status: Status.ERROR, reason: 'No item id returned' });
     });
   });
 });

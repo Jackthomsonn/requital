@@ -4,6 +4,7 @@ import * as functions from 'firebase-functions';
 import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
 import { UserConverter } from 'requital-converter';
 import { PubSub } from '@google-cloud/pubsub';
+import { Status } from '../enums/status';
 
 export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 'PLAID_SECRET'], ingressSettings: 'ALLOW_ALL' }).https.onRequest(async (request, response) => {
   const client = new PlaidApi(new Configuration({
@@ -50,11 +51,11 @@ export const setAccessToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', '
 
     functions.logger.debug('Initial pull message sent');
 
-    response.status(200).json({ status: 'success' });
-  } catch (error) {
+    response.status(200).json({ status: Status.SUCCESS, data: [] });
+  } catch (error: any) {
     response.status(500).json({
-      status: 'error',
-      error,
+      status: Status.ERROR,
+      reason: error.message,
     });
   }
 });

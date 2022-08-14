@@ -137,6 +137,7 @@ export const processTransactions = async (itemId: string, client: PlaidApi, tran
     return Promise.resolve(added);
   } catch (error: any) {
     functions.logger.error('Error processing transactions', { error });
+
     throw new Error(error.message);
   }
 };

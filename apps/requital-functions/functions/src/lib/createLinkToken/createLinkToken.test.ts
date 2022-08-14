@@ -1,4 +1,5 @@
 import { mockPlaid } from '../../../tests/mocks/plaid';
+import { Status } from '../enums/status';
 import { createLinkToken } from './createLinkToken';
 
 jest.mock('plaid', () => mockPlaid);
@@ -72,7 +73,7 @@ describe('createLinkToken test', () => {
 
       // Assert
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(jsonResponse).toHaveBeenCalledWith({ status: 'error', error: expect.anything() });
+      expect(jsonResponse).toHaveBeenCalledWith({ status: Status.ERROR, reason: expect.anything() });
     });
   });
 });
