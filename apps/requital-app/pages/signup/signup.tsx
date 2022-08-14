@@ -1,4 +1,4 @@
-import { Button, KeyboardAvoidingView, StyleSheet, Text, TextInput } from 'react-native';
+import { Button, KeyboardAvoidingView, StyleSheet, Text, TextInput, Image, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Controller, useForm } from 'react-hook-form';
@@ -57,51 +57,58 @@ export function SignupScreen() {
 
   return (
     <SafeAreaView style={styles.host}>
-      <KeyboardAvoidingView behavior="padding" style={{ margin: 24 }}>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <>
-              <Text>Email</Text>
-              <TextInput
-                textContentType='emailAddress'
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            </>
-          )}
-          name="email"
-        />
-        {errors.email && <Text>This is required.</Text>}
+      <KeyboardAvoidingView behavior="padding" style={{ margin: 24, display: 'flex', flex: 1 }}>
+        <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+          <Image source={require('../../assets/icon.png')} style={{ width: 120, height: 120, borderRadius: 14, display: 'flex' }} />
+        </View>
+        <View style={{ flex: 2 }}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text>Email</Text>
+                <TextInput
+                  textContentType='emailAddress'
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="email"
+          />
+          {errors.email && <Text style={{ marginBottom: 12, fontWeight: '700', color: Variables.secondary }}>This is required.</Text>}
 
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <>
-              <Text>Password</Text>
-              <TextInput
-                textContentType='password'
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            </>
-          )}
-          name="password"
-        />
-        {errors.email && <Text>This is required.</Text>}
+          <Controller
+            control={control}
+            rules={{
+              maxLength: 100,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text>Password</Text>
+                <TextInput
+                  textContentType='password'
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="password"
+          />
+          {errors.email && <Text style={{ marginBottom: 12, fontWeight: '700', color: Variables.secondary }}>This is required.</Text>}
 
-        <Button title="Sign up" onPress={handleSubmit(onSubmit)} />
-        <Text onPress={() => navigate('Login')}>Already have an account? Log in here</Text>
+          <View style={{ backgroundColor: Variables.primary, borderRadius: 8, padding: 6 }}>
+            <Button color={Variables.white} title="Signup" onPress={handleSubmit(onSubmit)} />
+          </View>
+          <Text style={{ textAlign: 'center', marginTop: 16, fontWeight: '700', color: Variables.secondary }} onPress={() => navigate('Login')}>Already have an account? Log in</Text>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView >
   );

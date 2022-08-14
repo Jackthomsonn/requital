@@ -9,10 +9,9 @@ describe('createLinkToken test', () => {
     test('should create a token link successfully', async () => {
       // Arrange
       const req: any = {
-        // Can remove stringify when v18 is out
-        body: JSON.stringify({
+        body: {
           userId: 'test-user',
-        }),
+        },
       };
 
       const res: any = {
@@ -52,10 +51,9 @@ describe('createLinkToken test', () => {
     test('should throw an error', async () => {
       // Arrange
       const req: any = {
-        // Can remove stringify when v18 is out
-        body: JSON.stringify({
+        body: {
           userId: 'test-user',
-        }),
+        },
       };
 
       const res: any = {

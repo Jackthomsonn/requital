@@ -1,13 +1,21 @@
 import 'dotenv/config';
 
+const config = {
+  environment: 'local',
+  functionUrl: 'https://requital.eu.ngrok.io/requital-39e1f/us-central1',
+};
+
+if (process.env.APP_ENV === 'production') {
+  config.functionUrl = 'https://us-central1-requital-39e1f.cloudfunctions.net';
+  config.environment = 'production';
+}
+
 export default {
   name: 'Requital',
-  version: '1.0.17',
+  version: '1.0.19',
   scheme: 'requital',
   extra: {
-    clientId: process.env.CLIENT_ID,
-    environment: process.env.NODE_ENV,
-    functionUrl: process.env.FUNCTION_URL,
+    ...config,
   },
   plugins: [[
     'expo-notifications',

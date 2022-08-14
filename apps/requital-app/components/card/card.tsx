@@ -47,6 +47,7 @@ export function Card({ title, subTitle, style, showButton, standOut, buttonText,
       }
       <Text style={{ ...styles.title, marginBottom: 12 }}>{title}</Text>
       {!standOut && <Text style={{ ...styles.subTitle, marginBottom: 12 }}>{subTitle}</Text>}
+      {!showButton && standOut && <Text style={{ fontSize: 16, color: Variables.primary, fontWeight: '900' }}>This offer has been redeemed 🥳</Text>}
       {(showButton && <View style={{ backgroundColor: Variables.primary, borderRadius: 4, padding: 4 }}>
         <Button title={buttonText} color={Variables.white} onPress={buttonFn} />
       </View>)}

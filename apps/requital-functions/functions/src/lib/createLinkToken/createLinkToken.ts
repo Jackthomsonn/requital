@@ -14,8 +14,7 @@ export const createLinkToken = functions.runWith({ secrets: ['PLAID_CLIENT_ID', 
     },
   }));
 
-  // Can remove parse when v18 is out
-  const { userId } = JSON.parse(request.body);
+  const { userId } = request.body;
 
   try {
     functions.logger.debug('Creating link token for user', { userId, webhookUrl: process.env.WEBHOOK_URL });

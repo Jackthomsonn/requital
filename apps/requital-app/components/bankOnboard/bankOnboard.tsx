@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../../contexts/appContext';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import PlaidLink from '../expo-plaid-link/Index';
+import Constants from 'expo-constants';
 
 global.Buffer = Buffer;
 
@@ -24,7 +25,7 @@ export function BankOnboard() {
 
   const generateToken = async () => {
     const response = await fetch(
-      'https://us-central1-requital-39e1f.cloudfunctions.net/createLinkToken',
+      `${Constants.manifest?.extra?.functionUrl}/createLinkToken`,
       {
         method: 'POST',
         headers: {
@@ -53,7 +54,7 @@ export function BankOnboard() {
       }
 
       await fetch(
-        'https://us-central1-requital-39e1f.cloudfunctions.net/setAccessToken',
+        `${Constants.manifest?.extra?.functionUrl}/setAccessToken`,
         {
           method: 'POST',
           headers: {

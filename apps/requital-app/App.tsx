@@ -23,8 +23,6 @@ export default function App() {
   const [isLoggedIn, setisLoggedIn] = useState(false);
   const { setIsLoading, isLoading, accountIsLinked } = useApp();
 
-  // signOut(auth);
-
   onAuthStateChanged(auth, async (user: User | null) => {
     if (!user) return;
 

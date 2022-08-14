@@ -1,4 +1,4 @@
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useMemo } from 'react';
 
 import { YourOverview } from '../../components/yourOverview/yourOverview';
@@ -10,6 +10,7 @@ import { auth, firestore } from '../../firebase';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { UserConverter } from 'requital-converter';
+import { signOut } from 'firebase/auth';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -60,7 +61,7 @@ export function HomeScreen() {
           {
             auth.currentUser &&
             auth.currentUser.photoURL &&
-            <Image source={{ uri: auth.currentUser.photoURL, width: 40, height: 40 }} style={{ borderRadius: 100 }} />
+            <TouchableOpacity onPress={async () => await signOut(auth)}><Image source={{ uri: auth.currentUser.photoURL, width: 40, height: 40 }} style={{ borderRadius: 100 }} /></TouchableOpacity>
           }
         </View>
         <View>

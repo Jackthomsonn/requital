@@ -1,15 +1,17 @@
-import { collectionGroup, setDoc, DocumentReference, getDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collectionGroup, setDoc, DocumentReference, getDoc, getDocs, doc, deleteDoc, collection } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { auth, firestore } from '../../firebase';
 
 import { Card } from '../card/card';
 import { Skeleton } from '../skeleton/skeleton';
-import { ActivatedOfferConverter, Business, Offer } from 'requital-converter';
+import { ActivatedOfferConverter, Business, Offer, RedeemedOfferConverter } from 'requital-converter';
 
 type UIOffers = Offer & {
+  id: string,
   company: string,
-  isActivated: boolean
+  isActivated: boolean,
+  isRedeemed: boolean
 }
 export function AllOffers() {
   const [offers, setOffers] = useState<UIOffers[]>();
@@ -30,18 +32,23 @@ export function AllOffers() {
       const docRef = document.ref;
       const parent = await getDoc<Business>(docRef.parent.parent as DocumentReference<Business>);
 
-      const activatedOffersQuery = doc(firestore, 'users', auth.currentUser.uid, 'activated_offers', document.id).withConverter(ActivatedOfferConverter);
-
-      const activatedOffer = await getDoc(activatedOffersQuery);
-
       if (!parent.data()) return;
 
-      docs.push({
-        ...document.data(),
-        id: document.id,
-        company: (parent.data() as Business).name,
-        isActivated: activatedOffer.exists(),
-      });
+      const activatedOffersQuery = doc(firestore, 'users', auth.currentUser.uid, 'activated_offers', document.id).withConverter(ActivatedOfferConverter);
+      const redeemedOffersQuery = collection(firestore, 'users', auth.currentUser.uid, 'redeemed_offers').withConverter(RedeemedOfferConverter);
+
+      const activatedOffer = await getDoc(activatedOffersQuery);
+      const redeemedOffers = await getDocs(redeemedOffersQuery);
+
+      for (const redeemedOffer of redeemedOffers.docs) {
+        docs.push({
+          ...document.data(),
+          id: document.id,
+          company: (parent.data() as Business).name,
+          isActivated: activatedOffer.exists(),
+          isRedeemed: redeemedOffer.data().originalOfferId === activatedOffer.data()?.originalOfferId,
+        });
+      }
     }
 
     setOffers(docs as any);
@@ -77,7 +84,7 @@ export function AllOffers() {
             title={offer.description}
             subTitle={`${offer.offerAmount}`}
             style={{ width: '100%', marginTop: 12 }}
-            showButton={true}
+            showButton={!offer.isRedeemed}
             buttonFn={() => markOfferAsActive(offer.id, offer.isActivated)}
             buttonText={offer.isActivated ? 'Deactivate offer' : 'Activate offer'}
           ></Card>
